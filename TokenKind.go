@@ -3,6 +3,7 @@ package govaluate
 /*
 	Represents all valid types of tokens that a token can be.
 */
+// 表示token的各种有效类型
 type TokenKind int
 
 const (
@@ -19,9 +20,9 @@ const (
 	SEPARATOR
 	ACCESSOR
 
-	COMPARATOR
+	COMPARATOR // 比较符号
 	LOGICALOP
-	MODIFIER
+	MODIFIER // 修改符号 加减乘除
 
 	CLAUSE
 	CLAUSE_CLOSE

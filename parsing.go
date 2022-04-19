@@ -52,6 +52,7 @@ func parseTokens(expression string, functions map[string]ExpressionFunction) ([]
 	return ret, nil
 }
 
+// 读取token
 func readToken(stream *lexerStream, state lexerState, functions map[string]ExpressionFunction) (ExpressionToken, error, bool) {
 
 	var function ExpressionFunction
@@ -75,7 +76,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 
 		character = stream.readCharacter()
 
-		if unicode.IsSpace(character) {
+		if unicode.IsSpace(character) { // 空格不读
 			continue
 		}
 
@@ -83,6 +84,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 
 		// numeric constant
 		if isNumeric(character) {
+			// 当前读取到是数字
 
 			if stream.canRead() && character == '0' {
 				character = stream.readCharacter()
@@ -104,7 +106,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 				}
 			}
 
-			tokenString = readTokenUntilFalse(stream, isNumeric)
+			tokenString = readTokenUntilFalse(stream, isNumeric) //condition是isNumeric
 			tokenValue, err = strconv.ParseFloat(tokenString, 64)
 
 			if err != nil {
@@ -300,6 +302,10 @@ func readTokenUntilFalse(stream *lexerStream, condition func(rune) bool) string 
 /*
 	Returns the string that was read until the given [condition] was false, or whitespace was broken.
 	Returns false if the stream ended before whitespace was broken or condition was met.
+*/
+/**
+include... 表示能否包括空格(比如日期20210826 17：22：16)、数字、字符串。引用运行，比如一些日期时间break，遇到空格是否停止读取
+Numeric 类型的condition是 isNumeric
 */
 func readUntilFalse(stream *lexerStream, includeWhitespace bool, breakWhitespace bool, allowEscaping bool, condition func(rune) bool) (string, bool) {
 

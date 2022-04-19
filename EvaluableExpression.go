@@ -101,11 +101,13 @@ func NewEvaluableExpressionWithFunctions(expression string, functions map[string
 		return nil, err
 	}
 
+	// 检测括号平衡
 	err = checkBalance(ret.tokens)
 	if err != nil {
 		return nil, err
 	}
 
+	// 检测表达式的语法，符合State的才是语法合规的
 	err = checkExpressionSyntax(ret.tokens)
 	if err != nil {
 		return nil, err
